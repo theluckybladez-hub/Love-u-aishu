@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Memories | Aishu's Birthday</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            position: relative;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 30px;
+            background: #ff7882;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(255, 120, 130, 0.3);
+        }
+        
+        .header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #ff7882;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Voice Note Section */
+        .voice-note-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 3px solid #ff7882;
+        }
+        
+        .voice-note-section h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #ff7882;
+            margin-bottom: 20px;
+        }
+        
+        .voice-player {
+            background: linear-gradient(to right, #fff0f0, #fff);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px dashed #ff7882;
+        }
+        
+        .voice-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .play-btn {
+            background: #ff7882;
+            color: white;
+            border: none;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.8rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(255, 120, 130, 0.3);
+        }
+        
+        .play-btn.playing {
+            background: #00C851;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .volume-control i {
+            color: #ff7882;
+            font-size: 1.2rem;
+        }
+        
+        input[type="range"] {
+            width: 150px;
+            height: 6px;
+            -webkit-appearance: none;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #ff7882;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .voice-duration {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Photo Gallery */
+        .photo-gallery-section {
+            margin: 40px 0;
+        }
+        
+        .photo-gallery-section h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #ff7882;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .photo-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            aspect-ratio: 1;
+            cursor: pointer;
+        }
+        
+        .photo-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .photo-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        
+        .photo-item:hover .photo-overlay {
+            transform: translateY(0);
+        }
+        
+        .photo-number {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff7882;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 120, 130, 0.3);
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            background: rgba(255, 120, 130, 0.8);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .nav-btn {
+            background: rgba(255, 120, 130, 0.8);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Message Section */
+        .message-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px auto;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid #ff7882;
+        }
+        
+        .message-section h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #ff7882;
+            margin-bottom: 20px;
+        }
+        
+        .message-section p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .heart-animation {
+            font-size: 2rem;
+            color: #ff7882;
+            animation: heartbeat 1.5s infinite;
+            display: inline-block;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .voice-note-section, .message-section {
+                padding: 20px;
+                margin: 20px;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            
+            .back-btn {
+                position: relative;
+                left: 0;
+                top: 0;
+                margin-bottom: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .voice-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Back to Birthday
+            </button>
+            <h1>Our Beautiful Memories 💖</h1>
+            <p>A collection of special moments and a voice message just for you, my love!</p>
+        </div>
+        
+        <!-- Voice Note Section -->
+        <div class="voice-note-section">
+            <h2><i class="fas fa-microphone-alt"></i> A Special Voice Message</h2>
+            <div class="voice-player">
+                <p style="margin-bottom: 20px; color: #666;">
+                    Click play to hear my message for you. When you play this, 
+                    the background music will automatically lower its volume.
+                </p>
+                
+                <div class="voice-controls">
+                    <button class="play-btn" id="playBtn">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    
+                    <div style="text-align: left;">
+                        <div class="volume-control">
+                            <i class="fas fa-volume-up"></i>
+                            <input type="range" id="volumeSlider" min="0" max="100" value="80">
+                            <span id="volumeValue">80%</span>
+                        </div>
+                        <div class="voice-duration" id="duration">Duration: 1:30</div>
+                    </div>
+                </div>
+                
+                <audio id="voiceAudio" preload="metadata">
+                    <source src="voice-note.mp3" type="audio/mpeg">
+                    <source src="voice-note.ogg" type="audio/ogg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+        
+        <!-- Photo Gallery -->
+        <div class="photo-gallery-section">
+            <h2><i class="fas fa-camera"></i> Memories Gallery (6 Photos)</h2>
+            <div class="gallery">
+                <!-- Photo 1 -->
+                <div class="photo-item" onclick="openLightbox(1)">
+                    <div class="photo-number">1</div>
+                    <img src="photos/photo1.jpg" alt="Memory 1" id="photo1">
+                    <div class="photo-overlay">
+                        <h3>Our First Memory</h3>
+                        <p>The day everything began ❤️</p>
+                    </div>
+                </div>
+                
+                <!-- Photo 2 -->
+                <div class="photo-item" onclick="openLightbox(2)">
+                    <div class="photo-number">2</div>
+                    <img src="photos/photo2.jpg" alt="Memory 2" id="photo2">
+                    <div class="photo-overlay">
+                        <h3>Smiling Together</h3>
+                        <p>Your smile lights up my world 🌟</p>
+                    </div>
+                </div>
+                
+                <!-- Photo 3 -->
+                <div class="photo-item" onclick="openLightbox(3)">
+                    <div class="photo-number">3</div>
+                    <img src="photos/photo3.jpg" alt="Memory 3" id="photo3">
+                    <div class="photo-overlay">
+                        <h3>Special Moments</h3>
+                        <p>Every moment with you is special 💫</p>
+                    </div>
+                </div>
+                
+                <!-- Photo 4 -->
+                <div class="photo-item" onclick="openLightbox(4)">
+                    <div class="photo-number">4</div>
+                    <img src="photos/photo4.jpg" alt="Memory 4" id="photo4">
+                    <div class="photo-overlay">
+                        <h3>Beautiful You</h3>
+                        <p>The most beautiful person I know 🌸</p>
+                    </div>
+                </div>
+                
+                <!-- Photo 5 -->
+                <div class="photo-item" onclick="openLightbox(5)">
+                    <div class="photo-number">5</div>
+                    <img src="photos/photo5.jpg" alt="Memory 5" id="photo5">
+                    <div class="photo-overlay">
+                        <h3>Happy Times</h3>
+                        <p>Making memories together 🎈</p>
+                    </div>
+                </div>
+                
+                <!-- Photo 6 -->
+                <div class="photo-item" onclick="openLightbox(6)">
+                    <div class="photo-number">6</div>
+                    <img src="photos/photo6.jpg" alt="Memory 6" id="photo6">
+                    <div class="photo-overlay">
+                        <h3>My Everything</h3>
+                        <p>You mean everything to me 💕</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Message Section -->
+        <div class="message-section">
+            <h2>A Message From My Heart</h2>
+            <p>
+                Aishu, these photos represent just a few of the countless beautiful moments we've shared. 
+                Each picture holds a special memory, a story, and a feeling that I'll cherish forever.
+            </p>
+            <p>
+                The voice message contains words straight from my heart - things I might not say often enough, 
+                but feel every single day. You're the best thing that ever happened to me.
+            </p>
+            <p>
+                Happy Birthday once again, my love! 
+                <span class="heart-animation">❤️</span>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-close" onclick="closeLightbox()">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="lightbox-nav">
+            <button class="nav-btn" onclick="changePhoto(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="nav-btn" onclick="changePhoto(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        <img class="lightbox-content" id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+        // Voice Note Player
+        const voiceAudio = document.getElementById('voiceAudio');
+        const playBtn = document.getElementById('playBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeValue = document.getElementById('volumeValue');
+        let backgroundMusic = null;
+        
+        // Try to get background music from main page
+        function getBackgroundMusic() {
+            try {
+                // Try to access parent window's music
+                if (window.opener) {
+                    backgroundMusic = window.opener.document.getElementById('backgroundMusic');
+                }
+                // If opened in same tab
+                const iframes = document.getElementsByTagName('iframe');
+                for (let iframe of iframes) {
+                    try {
+                        const music = iframe.contentWindow.document.getElementById('backgroundMusic');
+                        if (music) backgroundMusic = music;
+                    } catch (e) {}
+                }
+            } catch (e) {
+                console.log("Could not access background music");
+            }
+        }
+        
+        // Initialize
+        window.onload = function() {
+            getBackgroundMusic();
+            updateDuration();
+        };
+        
+        // Play/Pause Voice Note
+        playBtn.addEventListener('click', function() {
+            if (voiceAudio.paused) {
+                // Lower background music volume if it exists
+                if (backgroundMusic) {
+                    backgroundMusic.volume = 0.1; // Reduce to 10%
+                }
+                
+                voiceAudio.play();
+                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                playBtn.classList.add('playing');
+            } else {
+                voiceAudio.pause();
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                playBtn.classList.remove('playing');
+                
+                // Restore background music volume
+                if (backgroundMusic) {
+                    backgroundMusic.volume = 0.5; // Restore to 50%
+                }
+            }
+        });
+        
+        // Update button when audio ends
+        voiceAudio.addEventListener('ended', function() {
+            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            playBtn.classList.remove('playing');
+            
+            // Restore background music volume
+            if (backgroundMusic) {
+                backgroundMusic.volume = 0.5;
+            }
+        });
+        
+        // Volume Control
+        volumeSlider.addEventListener('input', function() {
+            const volume = this.value / 100;
+            voiceAudio.volume = volume;
+            volumeValue.textContent = this.value + '%';
+        });
+        
+        // Update duration display
+        function updateDuration() {
+            voiceAudio.addEventListener('loadedmetadata', function() {
+                const duration = voiceAudio.duration;
+                const minutes = Math.floor(duration / 60);
+                const seconds = Math.floor(duration % 60);
+                document.getElementById('duration').textContent = 
+                    `Duration: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            });
+        }
+        
+        // Lightbox functionality
+        let currentPhotoIndex = 1;
+        const totalPhotos = 6;
+        
+        function openLightbox(photoNumber) {
+            currentPhotoIndex = photoNumber;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            
+            // Set image source
+            const photoSrc = document.getElementById(`photo${photoNumber}`).src;
+            lightboxImg.src = photoSrc;
+            
+            // Show lightbox
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function changePhoto(direction) {
+            currentPhotoIndex += direction;
+            
+            // Loop around
+            if (currentPhotoIndex > totalPhotos) currentPhotoIndex = 1;
+            if (currentPhotoIndex < 1) currentPhotoIndex = totalPhotos;
+            
+            // Update image
+            const lightboxImg = document.getElementById('lightbox-img');
+            const photoSrc = document.getElementById(`photo${currentPhotoIndex}`).src;
+            lightboxImg.src = photoSrc;
+        }
+        
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') changePhoto(-1);
+                if (e.key === 'ArrowRight') changePhoto(1);
+            }
+        });
+        
+        // Click outside to close lightbox
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+        
+        // Go back to main page
+        function goBack() {
+            window.history.back();
+        }
+        
+        // Preload images for better experience
+        window.onload = function() {
+            for (let i = 1; i <= 6; i++) {
+                const img = new Image();
+                img.src = `photos/photo${i}.jpg`;
+            }
+            getBackgroundMusic();
+            updateDuration();
+        };
+    </script>
+</body>
+</html>

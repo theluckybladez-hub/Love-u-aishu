@@ -1024,14 +1024,14 @@ body {
     z-index: 10000000000000000;
 }
 
-/* Naye Button ke liye CSS */
-.btn-memories {
+/* Memories Button Styling - ADD THIS AT THE END OF style.css */
+#memoriesBtn {
     position: relative;
     margin-top: 20px;
-    background-color: #FF7882;
+    background: linear-gradient(to right, #FF7882, #ff9a9e);
     outline: none;
-    padding: 8px 20px;
-    font-size: 1rem;
+    padding: 10px 20px;
+    font-size: 1.1rem;
     border-radius: 50px;
     border: 3px solid var(--color-black);
     font-family: "Sriracha", cursive;
@@ -1040,47 +1040,38 @@ body {
     justify-content: center;
     cursor: pointer;
     z-index: 2;
-    transform: scale(0);
-    animation: scaleCricle 2s 16.5s forwards ease-in-out;
+    transform: scale(1);
     transition: all .5s ease-in-out;
     color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 280px;
 }
 
-.btn-memories:hover {
-    background-color: #ff5a6c;
-    border-color: #ff5a6c;
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(255, 90, 108, 0.3);
-}
-
-.btn-memories:active {
+#memoriesBtn:active {
     transform: scale(0.95);
 }
 
-.btn-memories .memories {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+#memoriesBtn i {
+    margin: 0 8px;
 }
 
-.btn-memories .fa-heart {
-    color: white;
-    animation: heartbeat 1.5s infinite;
+#memoriesBtn:hover {
+    border-color: var(--color-heart);
+    background: linear-gradient(to right, #ff4444, #FF7882);
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transform: translateY(-3px);
 }
 
-@keyframes heartbeat {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+#memoriesBtn:hover i.fa-heart {
+    animation: rotateHeart 1s infinite linear;
 }
 
-/* Mobile responsive adjustments */
+/* Responsive for memories button */
 @media screen and (max-width: 658px) {
-    .btn-memories {
-        margin-top: 15px;
-        width: 220px;
+    #memoriesBtn {
+        width: 250px;
+        font-size: 1rem;
         padding: 8px 15px;
-        font-size: 0.9rem;
+        margin-top: 15px;
     }
 }

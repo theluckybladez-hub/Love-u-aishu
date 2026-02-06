@@ -19,8 +19,8 @@
 </head>
 
 <body>
-    <!-- SIRF YE AUDIO TAG ADD KIYA HAI -->
-    <audio id="backgroundMusic" autoplay loop>
+    <!-- Music tag yahi rahega -->
+    <audio id="backgroundMusic" loop>
         <source src="birthday-music.mp3" type="audio/mpeg">
         <source src="birthday-music.ogg" type="audio/ogg">
         Your browser does not support the audio element.
@@ -165,21 +165,41 @@
 
 </body>
 <script>
-    // SIRF YE MUSIC WALA CODE ADD KIYA HAI
-    document.addEventListener('DOMContentLoaded', function() {
-        const backgroundMusic = document.getElementById('backgroundMusic');
-        if (backgroundMusic) {
-            backgroundMusic.volume = 0.5;
-            backgroundMusic.play().catch(function() {
-                // Agar autoplay block ho gaya, toh click pe play hoga
-                document.addEventListener('click', function startMusicOnce() {
-                    backgroundMusic.play();
-                    document.removeEventListener('click', startMusicOnce);
-                });
-            });
+    // MUSIC FIX: Sabse pahle music setup
+    let musicStarted = false;
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    
+    if (backgroundMusic) {
+        backgroundMusic.volume = 0.5; // Volume 50%
+        
+        // Pehla click par music start karo
+        function startMusicOnFirstClick() {
+            if (!musicStarted) {
+                backgroundMusic.play()
+                    .then(() => {
+                        console.log("Music started successfully");
+                        musicStarted = true;
+                    })
+                    .catch(error => {
+                        console.log("Music play error:", error);
+                    });
+            }
         }
-    });
+        
+        // Kisi bhi click pe music start ho
+        document.addEventListener('click', startMusicOnFirstClick);
+        
+        // Page load hone ke 2 second baad bhi try karo (agar possible ho)
+        setTimeout(() => {
+            if (!musicStarted) {
+                backgroundMusic.play().catch(() => {
+                    console.log("Will start on first click");
+                });
+            }
+        }, 2000);
+    }
 
+    // BAAKI SAB CODE SAME HAI
     let datetxt = "10th February";
     let datatxtletter = "Aishu pata nhi main kyu tum se itna pyar karta hu lekin kabhi tumko khona nhi chahta bss isliye itni rok tok karta hu shayad tumhe Mera ye sab rokna rokna pasand na ho lekin mere paas koi nhi hai tumhare siwa or shayad iss wajah se tumhe khone ka darr rehta hai 🥺💕";
     let titleLetter = "To you";

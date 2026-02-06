@@ -18,14 +18,14 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 
-    <!-- Background music AUTOPLAY -->
+<body>
+    <!-- SIRF YE AUDIO TAG ADD KIYA HAI -->
     <audio id="backgroundMusic" autoplay loop>
         <source src="birthday-music.mp3" type="audio/mpeg">
         <source src="birthday-music.ogg" type="audio/ogg">
         Your browser does not support the audio element.
     </audio>
-
-<body>
+    
     <div id="wrapper">
         <div class="flag__birthday">
             <img src="./images/1.png" alt="" width="350" class="flag__left">
@@ -165,6 +165,21 @@
 
 </body>
 <script>
+    // SIRF YE MUSIC WALA CODE ADD KIYA HAI
+    document.addEventListener('DOMContentLoaded', function() {
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        if (backgroundMusic) {
+            backgroundMusic.volume = 0.5;
+            backgroundMusic.play().catch(function() {
+                // Agar autoplay block ho gaya, toh click pe play hoga
+                document.addEventListener('click', function startMusicOnce() {
+                    backgroundMusic.play();
+                    document.removeEventListener('click', startMusicOnce);
+                });
+            });
+        }
+    });
+
     let datetxt = "10th February";
     let datatxtletter = "Aishu pata nhi main kyu tum se itna pyar karta hu lekin kabhi tumko khona nhi chahta bss isliye itni rok tok karta hu shayad tumhe Mera ye sab rokna rokna pasand na ho lekin mere paas koi nhi hai tumhare siwa or shayad iss wajah se tumhe khone ka darr rehta hai 🥺💕";
     let titleLetter = "To you";

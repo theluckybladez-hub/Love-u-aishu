@@ -234,6 +234,11 @@
     
     // Function to start typing animation
     function startTypingAnimation() {
+        console.log("startTypingAnimation called!");
+        console.log("hasStarted:", hasStarted);
+        console.log("titleElement:", titleElement);
+        console.log("messageElement:", messageElement);
+        
         if (!hasStarted && titleElement && messageElement) {
             hasStarted = true;
             titleElement.innerHTML = '';
@@ -241,6 +246,9 @@
             titleIndex = 0;
             messageIndex = 0;
             titleComplete = false;
+            
+            console.log("Typing interval starting...");
+            alert("Typing animation starting NOW!");
             
             typingInterval = setInterval(function() {
                 // Pehle title type karo (To You!)
@@ -284,11 +292,15 @@
     
     // Card open hone par button click
     mailBox.onclick = function () {
+        console.log("Button clicked!");
+        alert("Card opening! Typing will start in 2 seconds...");
+        
         mailBox.classList.toggle('active')
         boxmail.classList.add('active')
         
         // 2 second baad automatic typing start karo
         setTimeout(function() {
+            console.log("Starting typing animation...");
             startTypingAnimation();
         }, 2000); // 2 second delay
     }

@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meri Pyaari Yaadein | Aishu's Birthday</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffeef2 100%);
+            min-height: 100vh;
+            color: #5a3d5c;
+            line-height: 1.6;
+        }
+
+        /* Soft Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 182, 193, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 105, 180, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px 30px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(to right, transparent, #ff85a2, transparent);
+            border-radius: 2px;
+        }
+
+        .header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.2rem;
+            color: #ff6b93;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #8a6b8d;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* Memories Container */
+        .memories-container {
+            max-width: 900px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        /* Memory Item */
+        .memory-item {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(255, 107, 147, 0.1);
+            border: 2px solid rgba(255, 182, 193, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .memory-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 107, 147, 0.15);
+            border-color: rgba(255, 107, 147, 0.5);
+        }
+
+        .memory-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, #ff6b93, #ffb6c1);
+            border-radius: 3px 0 0 3px;
+        }
+
+        /* Photo Frame - AUTO ADJUSTING */
+        .photo-frame {
+            width: 100%;
+            min-height: 200px;
+            max-height: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 8px solid white;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f8f8;
+            padding: 15px;
+        }
+
+        .photo-frame img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .memory-item:hover .photo-frame img {
+            transform: scale(1.03);
+        }
+
+        .photo-number {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff6b93, #ff85a2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(255, 107, 147, 0.3);
+            z-index: 2;
+        }
+
+        /* Memory Note */
+        .memory-note {
+            background: rgba(255, 246, 248, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 10px;
+            border-left: 4px solid #ff6b93;
+        }
+
+        .memory-note p {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            color: #7a5a7c;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .memory-note i {
+            color: #ff6b93;
+            margin: 0 8px;
+            font-size: 1.2rem;
+        }
+
+        /* Voice Note Section */
+        .voice-section {
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .voice-card {
+            background: white;
+            border-radius: 25px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 40px rgba(255, 107, 147, 0.12);
+            border: 3px solid rgba(255, 182, 193, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .voice-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #ff6b93, #ffb6c1, #ff6b93);
+        }
+
+        .voice-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #ff6b93;
+            margin-bottom: 10px;
+        }
+
+        .voice-subtitle {
+            color: #8a6b8d;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        /* Voice Controls */
+        .voice-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .play-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b93, #ff85a2);
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 107, 147, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(255, 107, 147, 0.4);
+            background: linear-gradient(135deg, #ff5588, #ff6b93);
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        .play-btn.playing {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 147, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 107, 147, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 147, 0); }
+        }
+
+        .time-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 10px;
+        }
+
+        .time-display {
+            font-size: 1rem;
+            color: #7a5a7c;
+            font-family: monospace;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 6px;
+            background: #f0e1e5;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0 20px;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #ff6b93, #ffb6c1);
+            width: 0%;
+            transition: width 0.1s;
+            border-radius: 3px;
+        }
+
+        /* Volume Control */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .volume-control i {
+            color: #ff6b93;
+            font-size: 1.2rem;
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 6px;
+            -webkit-appearance: none;
+            background: #f0e1e5;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ff6b93;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #8a6b8d;
+            background: rgba(255, 255, 255, 0.9);
+            margin-top: 40px;
+            border-top: 2px solid rgba(255, 182, 193, 0.3);
+        }
+
+        .footer p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .heart-beat {
+            color: #ff6b93;
+            animation: heartbeat 1.2s infinite;
+            display: inline-block;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            text-align: center;
+            margin: 20px 0 40px;
+            color: #ff6b93;
+            opacity: 0.8;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .scroll-indicator i {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .photo-frame {
+                max-height: 400px;
+                padding: 10px;
+            }
+            
+            .memory-note p {
+                font-size: 1.2rem;
+            }
+            
+            .voice-title {
+                font-size: 2rem;
+            }
+            
+            .play-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .photo-frame {
+                max-height: 350px;
+                padding: 8px;
+            }
+            
+            .memory-item {
+                padding: 20px;
+            }
+            
+            .voice-card {
+                padding: 30px 20px;
+            }
+            
+            .memory-note p {
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Special cases for different image orientations */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .photo-frame {
+                max-height: 300px;
+            }
+        }
+        
+        /* Home Button */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+        
+        .home-btn {
+            background: linear-gradient(to right, #ff6b93, #ff85a2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(255, 107, 147, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 147, 0.4);
+        }
+        
+        .home-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        @media (max-width: 768px) {
+            .home-button {
+                top: 15px;
+                left: 15px;
+            }
+            
+            .home-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Home Button -->
+    <div class="home-button">
+        <button class="home-btn" onclick="goBackToMain()">
+            <i class="fas fa-home"></i> Back to Birthday
+        </button>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>💖 Meri Pyaari Yaadein 💖</h1>
+        <p>Har ek lamha tumhare saath ek khoobsurat kahani hai...</p>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+        <p>Scroll down for more memories</p>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+
+    <!-- Memories Container -->
+    <div class="memories-container" id="memoriesContainer">
+        <!-- Memories will be loaded here -->
+    </div>
+
+    <!-- Voice Note Section -->
+    <div class="voice-section">
+        <div class="voice-card">
+            <h2 class="voice-title">Mera Pyaar Bhara Sandesh</h2>
+            <p class="voice-subtitle">Click play to hear my heart speak ❤️</p>
+            
+            <div class="voice-controls">
+                <button class="play-btn" id="playBtn">
+                    <i class="fas fa-play"></i>
+                </button>
+                
+                <div class="time-info">
+                    <span class="time-display" id="currentTime">00:00</span>
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <span class="time-display" id="durationTime">00:00</span>
+                </div>
+                
+                <div class="volume-control">
+                    <i class="fas fa-volume-up"></i>
+                    <input type="range" min="0" max="100" value="70" class="volume-slider" id="volumeSlider">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>
+            <span class="heart-beat">❤️</span> 
+            Tumhari har yaad mere dil ki dhadkan hai 
+            <span class="heart-beat">❤️</span>
+        </p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">
+            Always yours, forever in love 💕
+        </p>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="voiceNote" preload="metadata">
+        <!-- Voice note file location -->
+        <source src="voice-note.mp3" type="audio/mpeg">
+        <source src="voice-note.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Memory Data - Customize yeh section
+        const memories = [
+            {
+                image: 'pics/memory1.jpg',
+                note: 'Tumhari pehli muskurahat, meri zindagi ka sabse khoobsurat lamha 🌸',
+                placeholder: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=600&h=800&fit=crop'
+            },
+            {
+                image: 'pics/memory2.jpg',
+                note: 'Har pal tumhare saath, ek nayi khushi ka ehsaas 💫',
+                placeholder: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop'
+            },
+            {
+                image: 'pics/memory3.jpg',
+                note: 'Tumhari aankhon mein dekha maine apna saara aasmaan ✨',
+                placeholder: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=600&h=800&fit=crop'
+            },
+            {
+                image: 'pics/memory4.jpg',
+                note: 'Tumhare saath bita har pal, meri zindagi ka sabse hasin tohfa 🎁',
+                placeholder: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop'
+            },
+            {
+                image: 'pics/memory5.jpg',
+                note: 'Tum mere ho, aur main tumhara... bas yahi sach hai meri jaan 💖',
+                placeholder: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop'
+            }
+        ];
+
+        // Function to go back to main page
+        function goBackToMain() {
+            // Fade out any playing audio
+            if (isPlaying) {
+                voiceNote.pause();
+                isPlaying = false;
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                playBtn.classList.remove('playing');
+            }
+            
+            // Smooth transition
+            document.body.style.opacity = '0.8';
+            document.body.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                window.location.href = 'main.html';
+            }, 300);
+        }
+
+        // Load Memories with proper image handling
+        function loadMemories() {
+            const container = document.getElementById('memoriesContainer');
+            
+            memories.forEach((memory, index) => {
+                const memoryItem = document.createElement('div');
+                memoryItem.className = 'memory-item';
+                
+                // Create image element with proper handling
+                const img = new Image();
+                img.onload = function() {
+                    // Image loaded successfully
+                    img.alt = `Memory ${index + 1}`;
+                    img.style.maxWidth = '100%';
+                    img.style.maxHeight = '100%';
+                    img.style.objectFit = 'contain';
+                    
+                    // Calculate aspect ratio and set appropriate class
+                    const aspectRatio = this.naturalWidth / this.naturalHeight;
+                    
+                    const photoFrame = memoryItem.querySelector('.photo-frame');
+                    if (aspectRatio > 1.2) {
+                        // Landscape
+                        photoFrame.style.maxHeight = '400px';
+                    } else if (aspectRatio < 0.8) {
+                        // Portrait
+                        photoFrame.style.maxHeight = '550px';
+                    } else {
+                        // Square
+                        photoFrame.style.maxHeight = '450px';
+                    }
+                };
+                
+                img.onerror = function() {
+                    // If image fails to load, use placeholder
+                    this.src = memory.placeholder;
+                    console.log(`Image ${memory.image} failed to load, using placeholder`);
+                };
+                
+                img.src = memory.image;
+                
+                memoryItem.innerHTML = `
+                    <div class="photo-number">${index + 1}</div>
+                    <div class="photo-frame">
+                        <!-- Image will be inserted here -->
+                    </div>
+                    <div class="memory-note">
+                        <p><i class="fas fa-heart"></i> ${memory.note} <i class="fas fa-heart"></i></p>
+                    </div>
+                `;
+                
+                // Insert the image into the photo frame
+                const photoFrame = memoryItem.querySelector('.photo-frame');
+                photoFrame.appendChild(img);
+                
+                container.appendChild(memoryItem);
+            });
+        }
+
+        // Voice Note Player
+        const voiceNote = document.getElementById('voiceNote');
+        const playBtn = document.getElementById('playBtn');
+        const currentTimeDisplay = document.getElementById('currentTime');
+        const durationTimeDisplay = document.getElementById('durationTime');
+        const progressBar = document.getElementById('progressBar');
+        const progressContainer = document.getElementById('progressContainer');
+        const volumeSlider = document.getElementById('volumeSlider');
+
+        let isPlaying = false;
+        let backgroundMusic = null;
+
+        // Format time (seconds to MM:SS)
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Update progress bar and time
+        function updateProgress() {
+            if (voiceNote.duration) {
+                const progress = (voiceNote.currentTime / voiceNote.duration) * 100;
+                progressBar.style.width = `${progress}%`;
+                
+                currentTimeDisplay.textContent = formatTime(voiceNote.currentTime);
+                durationTimeDisplay.textContent = formatTime(voiceNote.duration);
+            }
+        }
+
+        // Set progress on click
+        function setProgress(e) {
+            const width = this.clientWidth;
+            const clickX = e.offsetX;
+            const duration = voiceNote.duration;
+            
+            if (duration) {
+                voiceNote.currentTime = (clickX / width) * duration;
+            }
+        }
+
+        // Fade audio smoothly
+        function fadeAudio(audioElement, targetVolume, duration) {
+            if (!audioElement || audioElement.volume === undefined) return;
+            
+            const startVolume = audioElement.volume;
+            const change = targetVolume - startVolume;
+            const startTime = performance.now();
+            
+            function updateVolume(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                audioElement.volume = startVolume + (change * progress);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateVolume);
+                }
+            }
+            
+            requestAnimationFrame(updateVolume);
+        }
+
+        // Get background music from parent page
+        function getBackgroundMusic() {
+            try {
+                // Try to control parent page's music
+                if (window.opener && window.opener.document) {
+                    return window.opener.document.getElementById('backgroundMusic');
+                }
+                
+                return null;
+            } catch (e) {
+                console.log("Cannot access background music:", e);
+                return null;
+            }
+        }
+
+        // Control parent page's music
+        function controlBackgroundMusic(targetVolume, duration) {
+            try {
+                if (window.opener) {
+                    window.opener.postMessage({
+                        type: 'fadeMusic',
+                        targetVolume: targetVolume,
+                        duration: duration
+                    }, '*');
+                }
+            } catch (e) {
+                console.log("Cannot send message to parent:", e);
+            }
+        }
+
+        // Initialize voice note player
+        function initVoicePlayer() {
+            // Set initial volume
+            voiceNote.volume = volumeSlider.value / 100;
+            
+            // Update volume when slider changes
+            volumeSlider.addEventListener('input', function() {
+                voiceNote.volume = this.value / 100;
+            });
+            
+            // Set initial duration display
+            voiceNote.addEventListener('loadedmetadata', function() {
+                durationTimeDisplay.textContent = formatTime(voiceNote.duration);
+            });
+            
+            voiceNote.addEventListener('error', function(e) {
+                console.log("Audio error:", e);
+                alert("Voice note file nahi mila. Kripya check karein 'voice-note.mp3' file hai ya nahi.");
+            });
+            
+            // Update progress
+            voiceNote.addEventListener('timeupdate', updateProgress);
+            
+            // Handle play/pause
+            playBtn.addEventListener('click', function() {
+                if (!isPlaying) {
+                    // Fade out background music in parent page
+                    controlBackgroundMusic(0, 800);
+                    
+                    // Play voice note
+                    voiceNote.play().then(() => {
+                        isPlaying = true;
+                        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                        playBtn.classList.add('playing');
+                        
+                        // Set a timeout to restore music after voice ends
+                        const duration = voiceNote.duration * 1000;
+                        setTimeout(() => {
+                            if (isPlaying) {
+                                controlBackgroundMusic(0.5, 1500);
+                            }
+                        }, duration);
+                    }).catch(e => {
+                        console.log("Play failed:", e);
+                        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        playBtn.classList.remove('playing');
+                        alert("Voice note play nahi ho raha. Check karo 'voice-note.mp3' file hai kya?");
+                    });
+                } else {
+                    voiceNote.pause();
+                    isPlaying = false;
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    playBtn.classList.remove('playing');
+                    
+                    // Restore background music if paused mid-way
+                    controlBackgroundMusic(0.5, 1000);
+                }
+            });
+            
+            // Handle voice note end
+            voiceNote.addEventListener('ended', function() {
+                isPlaying = false;
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                playBtn.classList.remove('playing');
+                
+                // Auto-restore background music
+                setTimeout(() => {
+                    controlBackgroundMusic(0.5, 1500);
+                }, 500);
+            });
+            
+            // Progress bar click
+            progressContainer.addEventListener('click', setProgress);
+        }
+
+        // Initialize everything when page loads
+        window.onload = function() {
+            loadMemories();
+            initVoicePlayer();
+            
+            // Add subtle entrance animation to memories
+            const memoryItems = document.querySelectorAll('.memory-item');
+            memoryItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 200 + 300);
+            });
+            
+            // Check if voice note file exists
+            fetch('voice-note.mp3')
+                .then(response => {
+                    if (!response.ok) {
+                        console.warn("Voice note file nahi mila. Please add 'voice-note.mp3' file.");
+                    }
+                })
+                .catch(() => {
+                    console.warn("Voice note file check nahi ho paya.");
+                });
+        };
+        
+        // Handle page visibility change (if user switches tabs)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && isPlaying) {
+                // Page is hidden, pause the voice note
+                voiceNote.pause();
+                isPlaying = false;
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                playBtn.classList.remove('playing');
+                
+                // Restore background music
+                controlBackgroundMusic(0.5, 1000);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -21,8 +21,6 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            position: relative;
-            overflow-x: hidden;
         }
         
         .password-container {
@@ -34,8 +32,6 @@
             max-width: 500px;
             width: 100%;
             border: 5px solid #ff7882;
-            z-index: 2;
-            position: relative;
         }
         
         .lock-icon {
@@ -165,171 +161,9 @@
         .shake {
             animation: shake 0.5s;
         }
-
-        /* Floating Hearts Background */
-        .floating-hearts {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .heart-bg {
-            position: absolute;
-            color: rgba(255, 120, 130, 0.1);
-            font-size: 20px;
-            animation: float 15s infinite linear;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.3;
-            }
-            90% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        /* Loading Overlay Styles */
-        #loadingOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 999999;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .loading-content {
-            text-align: center;
-            padding: 50px 40px;
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 25px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
-            border: 6px solid #ff7882;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .loader-circle {
-            width: 100px;
-            height: 100px;
-            border: 10px solid #ff7882;
-            border-top: 10px solid transparent;
-            border-radius: 50%;
-            margin: 0 auto 30px;
-            animation: spin 1.5s linear infinite;
-            position: relative;
-        }
-
-        .loader-circle::before {
-            content: '🎁';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 30px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-text h2 {
-            font-family: 'Dancing Script', cursive;
-            color: #ff7882;
-            font-size: 3rem;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 0px rgba(255, 120, 130, 0.2);
-        }
-
-        .loading-text p {
-            color: #666;
-            font-size: 1.2rem;
-            margin-bottom: 25px;
-        }
-
-        .countdown {
-            font-size: 1.5rem;
-            color: #ff7882;
-            font-weight: bold;
-            margin-top: 20px;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .sparkle {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background-color: #ff7882;
-            border-radius: 50%;
-            animation: sparkleAnim 2s infinite;
-            opacity: 0;
-        }
-
-        @keyframes sparkleAnim {
-            0% { transform: scale(0) rotate(0deg); opacity: 0; }
-            50% { transform: scale(1) rotate(180deg); opacity: 0.8; }
-            100% { transform: scale(0) rotate(360deg); opacity: 0; }
-        }
-
-        .gift-icon {
-            font-size: 50px;
-            color: #ff7882;
-            margin-bottom: 20px;
-            animation: bounce 1s infinite alternate;
-        }
-
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-20px); }
-        }
     </style>
 </head>
 <body>
-    <!-- Floating Hearts Background -->
-    <div class="floating-hearts" id="floatingHearts"></div>
-    
-    <!-- Loading Overlay (Initially Hidden) -->
-    <div id="loadingOverlay">
-        <div class="loading-content">
-            <div class="gift-icon">
-                <i class="fas fa-gift"></i>
-            </div>
-            <div class="loader-circle"></div>
-            <div class="loading-text">
-                <h2>Opening Your Surprise! 💝</h2>
-                <p>Get ready for something magical...</p>
-                <div class="countdown" id="countdown">3</div>
-            </div>
-            <!-- Hidden auto-click button -->
-            <button id="autoClickBtn" style="display:none; position:absolute; width:1px; height:1px; opacity:0;"></button>
-        </div>
-    </div>
-
-    <!-- Main Password Container -->
     <div class="password-container">
         <div class="lock-icon">
             <i class="fas fa-lock"></i>
@@ -367,37 +201,6 @@
         const togglePassword = document.getElementById('togglePassword');
         const submitBtn = document.getElementById('submitBtn');
         const message = document.getElementById('message');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const floatingHearts = document.getElementById('floatingHearts');
-        const countdownElement = document.getElementById('countdown');
-
-        // Create floating hearts background
-        function createFloatingHearts() {
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart-bg';
-                heart.innerHTML = '❤️';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.fontSize = (Math.random() * 30 + 10) + 'px';
-                heart.style.animationDelay = Math.random() * 15 + 's';
-                heart.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                floatingHearts.appendChild(heart);
-            }
-        }
-
-        // Create sparkles for loading screen
-        function createSparkles() {
-            const loadingContent = document.querySelector('.loading-content');
-            for (let i = 0; i < 15; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                sparkle.style.left = Math.random() * 100 + '%';
-                sparkle.style.top = Math.random() * 100 + '%';
-                sparkle.style.animationDelay = Math.random() * 2 + 's';
-                sparkle.style.backgroundColor = i % 2 === 0 ? '#ff7882' : '#ff9a9e';
-                loadingContent.appendChild(sparkle);
-            }
-        }
 
         // Toggle password visibility
         togglePassword.addEventListener('click', function() {
@@ -429,14 +232,16 @@
             
             if (enteredPassword === CORRECT_PASSWORD) {
                 isUnlocked = true;
-                showMessage("Finnally Noobdi tumne password dhundh liya 🥳", "success");
+                showMessage("Finnally Noobdi tumne password dhundh liya 🥳");
                 submitBtn.innerHTML = '<i class="fas fa-check"></i> Access Granted!';
                 submitBtn.style.background = "linear-gradient(to right, #00C851, #00E676)";
                 
-                // Show beautiful loading page
-                showLoadingPage();
+                // Redirect to main page after 1.5 seconds
+                setTimeout(() => {
+                    window.location.href = "main.html";  // Change this to your actual birthday page filename
+                }, 1500);
             } else {
-                showMessage("Noobdi password bot se pucho jakar😑", "error");
+                showMessage("Noobdi password bot se pucho jakar😑");
                 
                 // Shake animation for wrong password
                 passwordInput.classList.add('shake');
@@ -463,48 +268,9 @@
             }
         }
 
-        function showLoadingPage() {
-            // Show loading overlay
-            loadingOverlay.style.display = 'flex';
-            
-            // Create sparkles
-            createSparkles();
-            
-            // Start countdown
-            let countdown = 3;
-            const countdownInterval = setInterval(() => {
-                countdownElement.textContent = countdown;
-                if (countdown === 0) {
-                    clearInterval(countdownInterval);
-                    countdownElement.textContent = "🎉 Ready! 🎉";
-                    
-                    // Simulate click for music auto-play
-                    setTimeout(() => {
-                        const autoClickBtn = document.getElementById('autoClickBtn');
-                        if (autoClickBtn) {
-                            // Create and trigger a click event
-                            const clickEvent = new MouseEvent('click', {
-                                view: window,
-                                bubbles: true,
-                                cancelable: true
-                            });
-                            autoClickBtn.dispatchEvent(clickEvent);
-                        }
-                        
-                        // Redirect to main page
-                        setTimeout(() => {
-                            window.location.href = "main.html";
-                        }, 1000);
-                    }, 1000);
-                }
-                countdown--;
-            }, 1000);
-        }
-
         // Focus on password input when page loads
         window.onload = function() {
             passwordInput.focus();
-            createFloatingHearts();
         };
     </script>
 </body>

@@ -11,6 +11,45 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-touch-callout: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+        }
+        
+        /* COMPLETE REMOVAL OF BLUE HIGHLIGHT ON ALL ELEMENTS */
+        button, 
+        input, 
+        a, 
+        div,
+        select,
+        textarea,
+        .password-box input,
+        .submit-btn,
+        .password-box i {
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-touch-callout: none !important;
+        }
+        
+        button:focus, 
+        input:focus, 
+        a:focus,
+        select:focus,
+        textarea:focus,
+        div:focus,
+        button:active,
+        input:active,
+        a:active,
+        .submit-btn:focus,
+        .submit-btn:active,
+        .password-box input:focus,
+        .password-box input:active {
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-touch-callout: none !important;
         }
         
         body {
@@ -85,6 +124,8 @@
         
         .password-box input:focus {
             box-shadow: 0 0 15px rgba(255, 120, 130, 0.3);
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent !important;
         }
         
         .password-box i {
@@ -232,7 +273,7 @@
             
             if (enteredPassword === CORRECT_PASSWORD) {
                 isUnlocked = true;
-                showMessage("Finnally Noobdi tumne password dhundh liya 🥳");
+                showMessage("Finally Noobdi tumne password dhundh liya 🥳", "success");
                 submitBtn.innerHTML = '<i class="fas fa-check"></i> Access Granted!';
                 submitBtn.style.background = "linear-gradient(to right, #00C851, #00E676)";
                 

@@ -1005,13 +1005,14 @@ body {
     z-index: 10000000000000000;
 }
 
-/* Memories Button - SAME AS FIRST BUTTON */
+/* Memories Button Styling - ADD THIS AT THE END OF style.css */
 #memoriesBtn {
     position: relative;
-    background-color: var(--color-text-pink);
+    margin-top: 20px;
+    background: linear-gradient(to right, #FF7882, #ff9a9e);
     outline: none;
-    padding: 5px 15px;
-    font-size: 1rem;
+    padding: 10px 20px;
+    font-size: 1.1rem;
     border-radius: 50px;
     border: 3px solid var(--color-black);
     font-family: "Sriracha", cursive;
@@ -1022,24 +1023,24 @@ body {
     z-index: 2;
     transform: scale(1);
     transition: all .5s ease-in-out;
-    color: var(--color-black);
-    width: auto;
-    margin-top: 0;
+    color: white;
+    width: 280px;
 }
 
 #memoriesBtn:active {
-    transform: scale(0.7);
+    transform: scale(0.95);
 }
 
 #memoriesBtn i {
-    margin-left: 5px;
+    margin: 0 8px;
 }
 
 #memoriesBtn:hover {
     border-color: var(--color-heart);
-    background-color: var(--color-heart);
+    background: linear-gradient(to right, #ff4444, #FF7882);
     color: #fff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transform: translateY(-3px);
 }
 
 #memoriesBtn:hover i.fa-heart {
@@ -1049,21 +1050,9 @@ body {
 /* Responsive for memories button */
 @media screen and (max-width: 658px) {
     #memoriesBtn {
-        width: 209px;
-        padding: 6px 4px;
+        width: 250px;
         font-size: 1rem;
-        margin-top: 0;
+        padding: 8px 15px;
+        margin-top: 15px;
     }
-}
-/* ====== COMPLETELY HIDE ROTATING CIRCLE ====== */
-.cricle {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-}
-
-.text__cricle {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
 }

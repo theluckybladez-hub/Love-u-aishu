@@ -16,9 +16,166 @@
         rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        /* Music Prompt Styles */
+        #musicPrompt {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff7882, #ff9a9e);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10000;
+            animation: bounce 2s infinite, fadeIn 0.5s ease;
+            box-shadow: 0 8px 20px rgba(255, 120, 130, 0.4);
+            border: 3px solid white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        #musicPrompt:hover {
+            transform: translateX(-50%) translateY(-5px);
+            box-shadow: 0 12px 25px rgba(255, 120, 130, 0.6);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; bottom: 10px; }
+            to { opacity: 1; bottom: 30px; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; transform: translateX(-50%) translateY(10px); }
+        }
+
+        #musicPrompt i {
+            font-size: 1.4rem;
+            animation: musicNote 1.5s infinite;
+        }
+
+        @keyframes musicNote {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        #musicPrompt span {
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Welcome Overlay */
+        #welcomeOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+
+        .welcome-content {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+            border: 6px solid #ff7882;
+            max-width: 500px;
+            width: 90%;
+            animation: welcomePulse 2s infinite;
+        }
+
+        @keyframes welcomePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .welcome-icon {
+            font-size: 70px;
+            color: #ff7882;
+            margin-bottom: 20px;
+            animation: welcomeBounce 1s infinite alternate;
+        }
+
+        @keyframes welcomeBounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+
+        .welcome-text h2 {
+            font-family: 'Dancing Script', cursive;
+            color: #ff7882;
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .welcome-text p {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+        }
+
+        .click-anywhere {
+            background: linear-gradient(to right, #ff7882, #ff9a9e);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 120, 130, 0.3);
+        }
+
+        .click-anywhere:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 120, 130, 0.4);
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Welcome Overlay (Initially visible, fades after music starts) -->
+    <div id="welcomeOverlay">
+        <div class="welcome-content">
+            <div class="welcome-icon">
+                <i class="fas fa-birthday-cake"></i>
+            </div>
+            <div class="welcome-text">
+                <h2>Welcome Aishu! 💖</h2>
+                <p>Your birthday surprise is ready...</p>
+                <p style="font-size: 1rem; color: #ff7882; margin-top: 10px;">
+                    <i class="fas fa-music"></i> Music will start automatically
+                </p>
+            </div>
+            <button class="click-anywhere" id="startEverything">
+                <i class="fas fa-play-circle"></i> Start Celebration
+            </button>
+        </div>
+    </div>
+
     <!-- Music tag yahi rahega -->
     <audio id="backgroundMusic" loop>
         <source src="birthday-music.mp3" type="audio/mpeg">
@@ -167,52 +324,139 @@
 
 </body>
 <script>
-    // MUSIC FIX: Sabse pahle music setup
+    // MAIN MUSIC SYSTEM - FIXED AUTOMATIC PLAY
     let musicStarted = false;
     const backgroundMusic = document.getElementById('backgroundMusic');
+    const welcomeOverlay = document.getElementById('welcomeOverlay');
+    const startButton = document.getElementById('startEverything');
     
-    if (backgroundMusic) {
-        backgroundMusic.volume = 0.5; // Volume 50%
-        
-        // Pehla click par music start karo
-        function startMusicOnFirstClick() {
-            if (!musicStarted) {
-                backgroundMusic.play()
-                    .then(() => {
-                        console.log("Music started successfully");
-                        musicStarted = true;
-                    })
-                    .catch(error => {
-                        console.log("Music play error:", error);
-                    });
-            }
+    // Music storage for pic.html communication
+    window.musicState = {
+        isPlaying: false,
+        currentTime: 0,
+        volume: 0.5
+    };
+    
+    // Initialize music system
+    function initMusicSystem() {
+        if (backgroundMusic) {
+            // Set initial volume
+            backgroundMusic.volume = 0.5;
+            window.musicState.volume = 0.5;
+            
+            // Try to play immediately (with user gesture simulation)
+            setTimeout(() => {
+                try {
+                    // Create a user gesture simulation
+                    const playPromise = backgroundMusic.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            // Success! Music is playing
+                            console.log("Music auto-started successfully");
+                            musicStarted = true;
+                            window.musicState.isPlaying = true;
+                            
+                            // Hide welcome overlay
+                            fadeOutWelcome();
+                            
+                            // Store music state
+                            localStorage.setItem('musicPlaying', 'true');
+                        }).catch(error => {
+                            console.log("Auto-play was prevented, showing prompt");
+                            showMusicPrompt();
+                        });
+                    }
+                } catch (error) {
+                    console.log("Music play error:", error);
+                    showMusicPrompt();
+                }
+            }, 1000);
         }
-        
-        // Kisi bhi click pe music start ho
-        document.addEventListener('click', startMusicOnFirstClick);
-        
-        // Page load hone ke 2 second baad bhi try karo (agar possible ho)
-        setTimeout(() => {
-            if (!musicStarted) {
-                backgroundMusic.play().catch(() => {
-                    console.log("Will start on first click");
-                });
-            }
-        }, 2000);
     }
-
-    // Background music control for pic.html
-    window.addEventListener('message', function(event) {
-        if (event.data && event.data.type === 'fadeMusic') {
-            const bgMusic = document.getElementById('backgroundMusic');
-            if (bgMusic) {
-                fadeAudio(bgMusic, event.data.targetVolume, event.data.duration);
-            }
+    
+    // Show music prompt
+    function showMusicPrompt() {
+        const musicPrompt = document.createElement('div');
+        musicPrompt.id = 'musicPrompt';
+        musicPrompt.innerHTML = `
+            <i class="fas fa-music"></i>
+            <span>Tap anywhere to start music</span>
+        `;
+        
+        musicPrompt.addEventListener('click', startMusicManually);
+        document.body.appendChild(musicPrompt);
+        
+        // Also allow click anywhere on welcome overlay
+        welcomeOverlay.addEventListener('click', startMusicManually);
+        startButton.addEventListener('click', startMusicManually);
+    }
+    
+    // Hide music prompt
+    function hideMusicPrompt() {
+        const prompt = document.getElementById('musicPrompt');
+        if (prompt) {
+            prompt.style.animation = 'fadeOut 0.5s forwards';
+            setTimeout(() => {
+                if (prompt.parentNode) {
+                    prompt.parentNode.removeChild(prompt);
+                }
+            }, 500);
+        }
+    }
+    
+    // Start music manually
+    function startMusicManually() {
+        if (!musicStarted && backgroundMusic) {
+            backgroundMusic.play()
+                .then(() => {
+                    console.log("Music started manually");
+                    musicStarted = true;
+                    window.musicState.isPlaying = true;
+                    hideMusicPrompt();
+                    fadeOutWelcome();
+                    
+                    localStorage.setItem('musicPlaying', 'true');
+                    localStorage.setItem('musicTime', backgroundMusic.currentTime);
+                })
+                .catch(error => {
+                    console.log("Manual play failed:", error);
+                });
+        }
+    }
+    
+    // Fade out welcome overlay
+    function fadeOutWelcome() {
+        if (welcomeOverlay) {
+            welcomeOverlay.style.opacity = '0';
+            setTimeout(() => {
+                welcomeOverlay.style.display = 'none';
+            }, 1000);
+        }
+    }
+    
+    // Initialize music on page load
+    window.addEventListener('load', initMusicSystem);
+    
+    // Also try to play on any user interaction
+    document.addEventListener('click', function() {
+        if (!musicStarted && backgroundMusic) {
+            startMusicManually();
         }
     });
-
-    function fadeAudio(audioElement, targetVolume, duration) {
-        const startVolume = audioElement.volume;
+    
+    // Track music time for communication with pic.html
+    setInterval(() => {
+        if (backgroundMusic && musicStarted) {
+            window.musicState.currentTime = backgroundMusic.currentTime;
+        }
+    }, 1000);
+    
+    // Function to control music volume (for pic.html)
+    window.adjustMusicVolume = function(targetVolume, duration = 1000) {
+        if (!backgroundMusic) return;
+        
+        const startVolume = backgroundMusic.volume;
         const change = targetVolume - startVolume;
         const startTime = performance.now();
         
@@ -220,7 +464,8 @@
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             
-            audioElement.volume = startVolume + (change * progress);
+            backgroundMusic.volume = startVolume + (change * progress);
+            window.musicState.volume = backgroundMusic.volume;
             
             if (progress < 1) {
                 requestAnimationFrame(updateVolume);
@@ -228,12 +473,9 @@
         }
         
         requestAnimationFrame(updateVolume);
-    }
+    };
     
-    // Store reference for pic.html
-    localStorage.setItem('bgMusicRef', 'mainPageMusic');
-
-    // BAAKI SAB CODE SAME HAI
+    // Rest of your existing code...
     let datetxt = "10th February";
     let charArrDate = datetxt.split('');
     let currentIndex = 0;
@@ -368,14 +610,26 @@
 
     // Memories button click handler
     document.getElementById('memoriesBtn').addEventListener('click', function() {
+        // Save music state before going to pic.html
+        if (backgroundMusic && musicStarted) {
+            localStorage.setItem('musicTime', backgroundMusic.currentTime);
+            localStorage.setItem('musicVolume', backgroundMusic.volume);
+            localStorage.setItem('musicPlaying', 'true');
+        }
+        
         // Smooth transition ke liye
         this.style.transform = 'scale(0.95)';
         this.style.transition = 'transform 0.2s';
         
+        // Volume thoda kam karo before leaving
+        if (backgroundMusic) {
+            window.adjustMusicVolume(0.2, 500);
+        }
+        
         setTimeout(() => {
             // Smoothly open pic.html
             window.location.href = 'pic.html';
-        }, 300);
+        }, 500);
     });
 
     // Add fade-in animation for button

@@ -439,6 +439,54 @@
             display: block;
         }
 
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #ff6b93, #ff85a2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(255, 107, 147, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 147, 0.4);
+            background: linear-gradient(135deg, #ff5588, #ff6b93);
+        }
+
+        /* Music Status Indicator */
+        .music-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: #ff6b93;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .header h1 {
@@ -463,6 +511,16 @@
                 height: 70px;
                 font-size: 1.5rem;
             }
+            
+            .back-button {
+                top: 15px;
+                left: 15px;
+            }
+            
+            .back-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -486,10 +544,28 @@
             .memory-note p {
                 font-size: 1.1rem;
             }
+            
+            .back-btn {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Back Button -->
+    <div class="back-button">
+        <button class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i> Back to Main
+        </button>
+    </div>
+
+    <!-- Music Status -->
+    <div class="music-status" id="musicStatus">
+        <i class="fas fa-music"></i>
+        <span>Background music is playing</span>
+    </div>
+
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loader"></div>
@@ -501,7 +577,7 @@
     <!-- Header -->
     <div class="header">
         <h1>Cute Madam ji💕</h1>
-        <p>Baccha mujhe pata hai tum mujhse bohot jyada naraz ho kyunki maine tumhare sath itna kharab behave Kiya or Ishita hi el ladki thi jiski help se mai tumse ladai kar sakta tha actually ye sab plan me allready tha mai surprise dena chahta tha tumko lekin shayad sab kharab kar diya majne🥺</p>
+        <p>Har ek lamha tumhare saath ek khoobsurat kahani hai...</p>
     </div>
 
     <!-- Scroll Indicator -->
@@ -560,7 +636,7 @@
             {
                 image: 'pics/memory1.jpg',
                 note: 'Kya lag rahi ho noobdi maal lag rahi ho😁🌸',
-                placeholder: 'images/default1.jpg' // Create a small placeholder image
+                placeholder: 'images/default1.jpg'
             },
             {
                 image: 'pics/memory2.jpg',
@@ -588,6 +664,83 @@
         let loadedImagesCount = 0;
         const totalImages = memories.length;
         const loadingScreen = document.getElementById('loadingScreen');
+        const backBtn = document.getElementById('backBtn');
+        const musicStatus = document.getElementById('musicStatus');
+
+        // Check if we came from main page
+        const cameFromMain = document.referrer.includes('main.html') || 
+                            localStorage.getItem('cameFromMain') === 'true';
+
+        // Store that we're in pic.html for music control
+        localStorage.setItem('currentPage', 'pic.html');
+        localStorage.setItem('cameFromMain', 'true');
+
+        // Function to communicate with main page for music control
+        function communicateWithMainPage(action, data = {}) {
+            try {
+                // Try to use localStorage for communication
+                localStorage.setItem('musicControl', JSON.stringify({
+                    action: action,
+                    data: data,
+                    timestamp: Date.now()
+                }));
+                
+                // Also try to send message if opener exists
+                if (window.opener && !window.opener.closed) {
+                    window.opener.postMessage({
+                        type: 'musicControl',
+                        action: action,
+                        data: data
+                    }, '*');
+                }
+                
+                console.log(`Sent message to main: ${action}`, data);
+            } catch (error) {
+                console.log("Communication error:", error);
+            }
+        }
+
+        // Initial music control - lower volume when entering
+        window.addEventListener('load', function() {
+            // Tell main page to lower music volume
+            communicateWithMainPage('lowerVolume', { targetVolume: 0.2 });
+            
+            // Update music status
+            setTimeout(() => {
+                musicStatus.innerHTML = '<i class="fas fa-volume-down"></i> <span>Background music lowered</span>';
+            }, 1000);
+        });
+
+        // Back button functionality
+        backBtn.addEventListener('click', function() {
+            // Tell main page to restore music volume
+            communicateWithMainPage('restoreVolume', { targetVolume: 0.5 });
+            
+            // Smooth transition
+            this.style.transform = 'scale(0.95)';
+            this.style.transition = 'transform 0.2s';
+            
+            // Wait a bit for volume adjustment
+            setTimeout(() => {
+                // Go back to main page
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = 'main.html';
+                }
+            }, 500);
+        });
+
+        // Handle page visibility change
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                // Page is hidden (user switched tabs)
+                communicateWithMainPage('pauseMusic');
+            } else {
+                // Page is visible again
+                communicateWithMainPage('playMusic');
+            }
+        });
 
         // Load Memories with Optimized Loading
         function loadMemories() {
@@ -736,21 +889,6 @@
             }
         }
 
-        // Control parent page's music
-        function controlBackgroundMusic(targetVolume, duration) {
-            try {
-                if (window.opener) {
-                    window.opener.postMessage({
-                        type: 'fadeMusic',
-                        targetVolume: targetVolume,
-                        duration: duration
-                    }, '*');
-                }
-            } catch (e) {
-                console.log("Cannot send message to parent:", e);
-            }
-        }
-
         // Initialize voice note player
         function initVoicePlayer() {
             // Set volume to 100%
@@ -767,19 +905,29 @@
             // Handle play/pause
             playBtn.addEventListener('click', function() {
                 if (!isPlaying) {
-                    controlBackgroundMusic(0, 800);
+                    // Lower background music more when voice note plays
+                    communicateWithMainPage('lowerVolume', { targetVolume: 0.1 });
                     
                     voiceNote.play().then(() => {
                         isPlaying = true;
                         playBtn.innerHTML = '<i class="fas fa-pause"></i>';
                         playBtn.classList.add('playing');
                         
-                        const duration = voiceNote.duration * 1000;
-                        setTimeout(() => {
-                            if (isPlaying) {
-                                controlBackgroundMusic(0.5, 1500);
-                            }
-                        }, duration);
+                        // Update music status
+                        musicStatus.innerHTML = '<i class="fas fa-volume-mute"></i> <span>Listening to voice note...</span>';
+                        
+                        // Restore volume when voice note ends
+                        voiceNote.addEventListener('ended', function() {
+                            isPlaying = false;
+                            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                            playBtn.classList.remove('playing');
+                            
+                            // Restore background music volume
+                            setTimeout(() => {
+                                communicateWithMainPage('restoreVolume', { targetVolume: 0.2 });
+                                musicStatus.innerHTML = '<i class="fas fa-volume-down"></i> <span>Background music lowered</span>';
+                            }, 500);
+                        });
                     }).catch(e => {
                         console.log("Play failed:", e);
                         playBtn.innerHTML = '<i class="fas fa-play"></i>';
@@ -791,19 +939,10 @@
                     playBtn.innerHTML = '<i class="fas fa-play"></i>';
                     playBtn.classList.remove('playing');
                     
-                    controlBackgroundMusic(0.5, 1000);
+                    // Restore background music volume
+                    communicateWithMainPage('restoreVolume', { targetVolume: 0.2 });
+                    musicStatus.innerHTML = '<i class="fas fa-volume-down"></i> <span>Background music lowered</span>';
                 }
-            });
-            
-            // Handle voice note end
-            voiceNote.addEventListener('ended', function() {
-                isPlaying = false;
-                playBtn.innerHTML = '<i class="fas fa-play"></i>';
-                playBtn.classList.remove('playing');
-                
-                setTimeout(() => {
-                    controlBackgroundMusic(0.5, 1500);
-                }, 500);
             });
             
             // Progress bar click
@@ -832,6 +971,13 @@
                     }, 500);
                 }
             }, 5000);
+            
+            // Clear localStorage when leaving
+            window.addEventListener('beforeunload', function() {
+                localStorage.removeItem('currentPage');
+                // Tell main page to restore full volume
+                communicateWithMainPage('restoreVolume', { targetVolume: 0.5 });
+            });
         };
     </script>
 </body>

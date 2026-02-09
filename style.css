@@ -265,16 +265,6 @@ body {
     object-fit: cover;
 
 }
-.cricle{
-    position: absolute;
-    top: 20px;
-    right: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: scale(0);
-    animation: scaleCricle 3s 15s forwards ease-in-out;
-}
 @keyframes scaleCricle {
     0%{
         transform: scale(0);
@@ -290,41 +280,15 @@ body {
     }
 
 }
-.text__cricle{
-    width: 100px;
-    height: 100px;
-    background-color: var(--color-text-pink);
-    border-radius: 50%;
-    border: 5px solid var(--color-black);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: rotateCricle 5s linear infinite;
-}
 @keyframes rotateCricle{
     to{
         transform: rotate(360deg);
     }
 }
-.text__cricle span{
-    top: 0%;
-    left: 50%;
-    position: absolute;
-    color: var(--color-black);
-    transform: rotate(calc(var(--i) * 24deg));
-    transform-origin: 0 45px;
-    font-family: "Sriracha", cursive;
-    text-transform: uppercase;
-    font-size: 0.7rem;
-}
 .fa-heart{
     color: var(--color-heart);
     filter: drop-shadow(0 0 3px var(--color-heart));
     animation: scaleHeart 1s infinite linear;
-}
-.cricle .fa-heart{
-    position: absolute;
-    transform: scale(0.85);
 }
 @keyframes scaleHeart{
     50%{
@@ -681,17 +645,6 @@ body {
         z-index: 2;
         /* transform: scale(1); */
         transition: all .5s ease-in-out;
-    }
-
-    .cricle {
-        position: absolute;
-        top: 10px;
-        right: -54px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transform: scale(0);
-        animation: scaleCricle 3s 15s forwards ease-in-out;
     }
 
     .title .hat {
@@ -1055,4 +1008,29 @@ body {
         padding: 8px 15px;
         margin-top: 15px;
     }
+}
+/* COMPLETELY REMOVE ROTATING CIRCLE */
+.cricle,
+.text__cricle,
+.text__cricle span,
+.cricle .fa-heart {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    pointer-events: none !important;
+    user-select: none !important;
+}
+
+/* Also remove the animation keyframes */
+@keyframes rotateCricle {
+    /* Empty - don't run */
+}
+
+@keyframes scaleCricle {
+    /* Empty - don't run */
 }
